@@ -11,7 +11,7 @@
   },
   "author": "cdaringe",
   "bin": {
-    "coins": "./cli.js"
+    "coins": "./index.js"
   },
   "license": "ISC",
   "dependencies": {
