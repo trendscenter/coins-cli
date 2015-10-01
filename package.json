@@ -1,16 +1,18 @@
 {
   "name": "coins-cli",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "COINS ecosystem development utility",
   "main": "index.js",
   "scripts": {
-      "preversion": "git checkout master && git pull && npm ls",
-      "publish-patch": "npm run preversion && npm version patch && git push origin master --tags && npm publish",
-      "publish-minor": "npm run preversion && npm version minor && git push origin master --tags && npm publish",
-      "publish-major": "npm run preversion && npm version major && git push origin master --tags && npm publish"
+    "preversion": "git checkout master && git pull && npm ls",
+    "publish-patch": "npm run preversion && npm version patch && git push origin master --tags && npm publish",
+    "publish-minor": "npm run preversion && npm version minor && git push origin master --tags && npm publish",
+    "publish-major": "npm run preversion && npm version major && git push origin master --tags && npm publish"
   },
   "author": "cdaringe",
-  "bin" : { "coins" : "./cli.js" },
+  "bin": {
+    "coins": "./cli.js"
+  },
   "license": "ISC",
   "dependencies": {
     "chalk": "^1.1.1",
