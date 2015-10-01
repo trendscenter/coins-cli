@@ -1,5 +1,8 @@
 # coins-cli
 
+## install
+`npm i -g coins-cli`
+
 ## usage
 By default, running `coins` outputs sys status.
 ```bash
@@ -21,7 +24,7 @@ closure-library invalid directory: /coins/www/html/closure-library
 coins_core      develop
 coins_auth      develop
 micis           develop
-cas              develop
+cas             develop
 asmt            bugfix/sa-caching
 p2              develop
 oCoins          develop
