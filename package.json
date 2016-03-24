@@ -2,7 +2,7 @@
   "name": "coins-cli",
   "version": "1.0.2",
   "description": "COINS ecosystem development utility",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "preversion": "git checkout master && git pull && npm ls",
     "publish-patch": "npm run preversion && npm version patch && git push origin master --tags && npm publish",
@@ -11,13 +11,18 @@
   },
   "author": "cdaringe",
   "bin": {
-    "coins": "./bin.js"
+    "coins": "./src/coins.js"
   },
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
+    "async": "^2.0.0-rc.2",
     "chalk": "^1.1.1",
     "columnify": "^1.5.2",
-    "nomnom": "^1.8.1",
-    "sync-exec": "^0.6.2"
-  }
+    "commander": "^2.9.0"
+  },
+  "devDependencies": {
+    "git-validate": "^2.1.4",
+    "standard": "^6.0.8"
+  },
+  "repository": "https://github.com/cdaringe/coins-cli"
 }
