@@ -25,12 +25,8 @@ git.bulkAction({ action, target }, (err, rslt) => {
     throw err
   }
   rslt = rslt.map((rp) => {
-    // red-ify error, put into branch column
     if (rp.error) {
-      rp.status = chalk.red(rp.error)
-      delete rp.error
-    } else {
-      rp.status = chalk.green(rp.status)
+      rp.error = chalk.red(rp.error)
     }
     return rp
   })

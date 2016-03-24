@@ -1,7 +1,6 @@
 'use strict'
 const cp = require('child_process')
 const columnify = require('columnify')
-const exec = cp.execSync
 const path = require('path')
 const chalk = require('chalk')
 const defaultDir = '/coins/www/html'
@@ -38,7 +37,7 @@ me.getBranchState = () => {
       return { repo: repo.name, error: `invalid directory: ${repoDir}` }
     }
     try {
-      const branch = exec('git branch')
+      const branch = cp.execSync('git branch')
       if (branch.stderr) { throw branch.stderr }
       const currBranch = branch.stdout.split('\n')
       .filter(b => b.match(/\* /))[0]
@@ -87,16 +86,12 @@ me.bulkAction = function (opts, cb) {
       } catch (err) {
         return cb(null, { repo: repo.name, error: 'invalid directory: ' + repoDir })
       }
-      try {
-        if (!target) target = ''
-        let cmd = `git ${action} ${target}`
-        const rslt = exec(cmd)
-        if (rslt.stderr) return cb(new Error(rslt.stderr))
-        return cb(null, { repo: repo.name, status: 'ok' })
-      } catch (err) {
-        return cb(null, { repo: repo.name, error: 'unable to checkout branch: ' + err })
-      }
-      return cb(new Error('fatal'))
+      if (!target) target = ''
+      let cmd = `git ${action} ${target}`
+      cp.exec(cmd, (err, stderr, stdout) => {
+        if (err) return cb(null, { repo: repo.name, error: err.message })
+        return cb(null, { repo: repo.name, output: stderr + stdout })
+      })
     },
     (err, rslt) => {
       if (err) return cb(err)
