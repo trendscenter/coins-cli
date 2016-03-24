@@ -1,7 +1,7 @@
+
 'use strict'
 const async = require('async')
 const cp = require('child_process')
-const exec = cp.execSync
 const services = [
   'apache2',
   'coinsnodeapi',
@@ -16,15 +16,11 @@ me.bulkAction = function (opts, cb) {
   async.map(
     services,
     (service, cb) => {
-      try {
-        let cmd = `sudo service ${service} ${action}`
-        const rslt = exec(cmd)
-        if (rslt.stderr) return cb(new Error(rslt.stderr))
-        return cb(null, { service, output: rslt.stdout.toString() })
-      } catch (error) {
-        return cb(null, { service, error })
-      }
-      return cb(new Error('fatal'))
+      let cmd = `sudo service ${service} ${action}`
+      cp.exec(cmd, (err, stderr, stdout) => {
+        if (err) return cb(null, { service, error: err.message })
+        return cb(null, { service, output: stderr + stdout })
+      })
     },
     cb
   )
