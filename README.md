@@ -35,30 +35,4 @@ cdieringer@localcoin:~$ coins
 	coins services status
 ```
 
-now run something.
-
-```
-cdieringer@localcoin:~$ coins git checkout master
-Switched to a new branch 'master'
-Switched to a new branch 'master'
-Switched to branch 'master'
-Switched to branch 'master'
-Switched to branch 'master'
-Switched to branch 'master'
-Switched to a new branch 'master'
-Switched to a new branch 'master'
-Switched to a new branch 'master'
-Switched to branch 'master'
-REPO            STATUS
-asmt            ok
-blockly         ok
-cas             ok
-coins           invalid directory: /coins/www/html/coins
-closure-library invalid directory: /coins/www/html/closure-library
-coins_core      ok
-coins_auth      ok
-micis           ok
-portals         ok
-p2              ok
-oCoins          ok
-```
+now run something!
