@@ -5,6 +5,7 @@ const path = require('path')
 const chalk = require('chalk')
 const defaultDir = '/coins/www/html'
 const async = require('async')
+const formatOutput = require('./format-output')
 
 const repositories = [
   { name: 'asmt', dir: path.join(defaultDir, 'micis') },
@@ -74,8 +75,6 @@ me.print = () => {
 }
 
 me.bulkAction = function (opts, cb) {
-  const action = opts.action
-  let target = opts.target
   let currDir = process.cwd()
   async.map(
     repositories,
@@ -86,11 +85,13 @@ me.bulkAction = function (opts, cb) {
       } catch (err) {
         return cb(null, { repo: repo.name, error: 'invalid directory: ' + repoDir })
       }
-      if (!target) target = ''
-      let cmd = `git ${action} ${target}`
+      let cmd = 'git ' + opts.args.join(' ')
       cp.exec(cmd, (err, stderr, stdout) => {
         if (err) return cb(null, { repo: repo.name, error: err.message })
-        return cb(null, { repo: repo.name, output: stderr + stdout })
+        return cb(null, {
+          repo: repo.name,
+          output: formatOutput(opts.verbose, stderr, stdout)
+        })
       })
     },
     (err, rslt) => {

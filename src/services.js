@@ -1,7 +1,7 @@
-
 'use strict'
 const async = require('async')
 const cp = require('child_process')
+const formatOutput = require('./format-output')
 const services = [
   'apache2',
   'coinsnodeapi',
@@ -19,7 +19,7 @@ me.bulkAction = function (opts, cb) {
       let cmd = `sudo service ${service} ${action}`
       cp.exec(cmd, (err, stderr, stdout) => {
         if (err) return cb(null, { service, error: err.message })
-        return cb(null, { service, output: stderr + stdout })
+        return cb(null, { service, output: formatOutput(opts.verbose, stderr, stdout) })
       })
     },
     cb

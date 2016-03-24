@@ -5,6 +5,7 @@ const chalk = require('chalk')
 const columnify = require('columnify')
 const git = require('./git.js')
 const program = require('commander')
+.option('-v, --verbose', 'show full command output, vs single line')
 program.on('--help', function () {
   console.log([
     '    Please provide a git command (e.g. pull, push, checkout, etc).',
@@ -15,11 +16,12 @@ program.on('--help', function () {
 })
 program.parse(process.argv)
 const action = program.args[0]
-const target = program.args[1]
+const verbose = program.verbose
+const args = program.args
 
 if (!action) return git.print()
 
-git.bulkAction({ action, target }, (err, rslt) => {
+git.bulkAction({ args, verbose }, (err, rslt) => {
   if (err) {
     program.outputHelp()
     throw err

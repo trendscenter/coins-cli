@@ -6,8 +6,10 @@ const program = require('commander')
 .version(pkgJSON.version)
 .command('git [action]', 'perform bulk git operations on one or more coins packages')
 .command('services [action]', 'manage coins services')
+
 program.on('--help', function () {
   console.log([
+    '    -v, --verbose     output full command text, vs single line\n',
     '    Please provide a git command (e.g. pull, push, checkout, etc), or',
     '    a service command.\n',
     '    Examples:\n',
