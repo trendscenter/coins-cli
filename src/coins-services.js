@@ -17,10 +17,7 @@ if (!action) {
 }
 
 services.bulkAction({ action, verbose }, (err, rslt) => {
-  if (err) {
-    program.outputHelp()
-    throw err
-  }
+  if (err) throw err
   rslt = rslt.map((rp) => {
     if (rp.error) {
       rp.status = chalk.red(rp.error)
