@@ -4,7 +4,7 @@ const cp = require('child_process')
 const formatOutput = require('./format-output')
 const services = [
   'apache2',
-  'coinsnodeapi',
+  'steelpenny',
   'webpack-dev-server',
   'nginx'
 ]

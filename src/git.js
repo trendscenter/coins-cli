@@ -19,7 +19,7 @@ const repositories = [
   { name: 'portals', dir: defaultDir },
   { name: 'p2', dir: defaultDir },
   { name: 'oCoins', dir: defaultDir },
-  { name: 'nodeapi', dir: '/coins' }
+  { name: 'quarterback', dir: '/coins' }
   // { name: 'dataDownloadCenter', dir: defaultDir },
   // { name: 'dcwebservices', dir: defaultDir },
   // { name: 'DXCapsuleBuilder', dir: defaultDir },
