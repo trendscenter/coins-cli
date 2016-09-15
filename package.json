@@ -21,7 +21,7 @@
     "commander": "^2.9.0"
   },
   "devDependencies": {
-    "git-validate": "^2.1.4",
+    "git-validate": "^2.2.2",
     "standard": "^7.0.0"
   },
   "repository": "https://github.com/cdaringe/coins-cli"
