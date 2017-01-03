@@ -26,19 +26,12 @@ const SERVICES = [
  */
 function getServiceCommand(service, action, cb) {
   platformHelper.getIsUbuntu16((error, isUbuntu16) => {
-    if (error) {
-      cb(error);
-    } else {
-      let command = isUbuntu16 ?
+    cb(
+      error,
+      isUbuntu16 ?
         `systemctl ${action} ${service}` :
-        `service ${service} ${action}`;
-
-      if (action !== 'status') {
-        command = `sudo ${command}`;
-      }
-
-      cb(null, command);
-    }
+        `service ${service} ${action}`
+    );
   });
 }
 
