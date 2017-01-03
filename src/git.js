@@ -1,11 +1,13 @@
-'use strict'
-const cp = require('child_process')
-const columnify = require('columnify')
-const path = require('path')
-const chalk = require('chalk')
-const defaultDir = '/coins/www/html'
-const async = require('async')
-const formatOutput = require('./format-output')
+
+
+const cp = require('child_process');
+const columnify = require('columnify');
+const path = require('path');
+const chalk = require('chalk');
+const async = require('async');
+const formatOutput = require('./format-output');
+
+const defaultDir = '/coins/www/html';
 
 const repositories = [
   { name: 'asmt', dir: path.join(defaultDir, 'micis') },
@@ -19,87 +21,91 @@ const repositories = [
   { name: 'portals', dir: defaultDir },
   { name: 'p2', dir: defaultDir },
   { name: 'oCoins', dir: defaultDir },
-  { name: 'quarterback', dir: '/coins' }
+  { name: 'quarterback', dir: '/coins' },
   // { name: 'dataDownloadCenter', dir: defaultDir },
   // { name: 'dcwebservices', dir: defaultDir },
   // { name: 'DXCapsuleBuilder', dir: defaultDir },
   // { name: 'db_schema', dir: defaultDir },
-]
+];
 
-const me = {}
+const me = {};
 
 me.getBranchState = () => {
-  let currDir = process.cwd()
+  const currDir = process.cwd();
   const result = repositories.map((repo) => {
-    const repoDir = path.join(repo.dir, repo.name)
+    const repoDir = path.join(repo.dir, repo.name);
     try {
-      process.chdir(repoDir)
+      process.chdir(repoDir);
     } catch (err) {
-      return { repo: repo.name, error: `invalid directory: ${repoDir}` }
+      return { repo: repo.name, error: `invalid directory: ${repoDir}` };
     }
     try {
-      const branch = cp.execSync('git branch')
-      if (branch.stderr) { throw branch.stderr }
+      const branch = cp.execSync('git branch');
+      if (branch.stderr) { throw branch.stderr; }
       const currBranch = branch.stdout.split('\n')
       .filter(b => b.match(/\* /))[0]
-      .replace('* ', '')
-      return { repo: repo.name, branch: currBranch }
+      .replace('* ', '');
+      return { repo: repo.name, branch: currBranch };
     } catch (err) {
-      return { repo: repo.name, error: 'unable to get branch: ' + err }
+      return { repo: repo.name, error: `unable to get branch: ${err}` };
     }
-    throw new Error('fatal')
-  })
-  process.chdir(currDir)
-  return result
-}
+  });
+  process.chdir(currDir);
+  return result;
+};
 
 me.print = () => {
-  console.log(chalk.underline.bold('Git:'))
-  let repoBranches = me.getBranchState()
-  const ccBranch = repoBranches.filter((rp) => rp.repo === 'coins_core')[0].branch
-  console.log(`All branches compared to coins_core branch: ${ccBranch}`)
+  console.log(chalk.underline.bold('Git:'));
+  let repoBranches = me.getBranchState();
+  const ccBranch = repoBranches.filter(rp => rp.repo === 'coins_core')[0].branch;
+  console.log(`All branches compared to coins_core branch: ${ccBranch}`);
   repoBranches = repoBranches.map((rp) => {
     // red-ify error, put into branch column
+    /* eslint-disable no-param-reassign */
     if (rp.error) {
-      rp.branch = chalk.red(rp.error)
-      delete rp.error
+      rp.branch = chalk.red(rp.error);
+      delete rp.error;
     }
     if (rp.branch !== ccBranch) {
-      rp.branch = chalk.magenta(rp.branch)
+      rp.branch = chalk.magenta(rp.branch);
     } else {
-      rp.branch = chalk.green(rp.branch)
+      rp.branch = chalk.green(rp.branch);
     }
-    return rp
-  })
-  console.log(columnify(repoBranches))
-}
+    /* eslint-enable no-param-reassign */
+    return rp;
+  });
+  console.log(columnify(repoBranches));
+};
 
 me.bulkAction = function (opts, cb) {
-  let currDir = process.cwd()
+  const currDir = process.cwd();
   async.map(
     repositories,
-    (repo, cb) => {
-      const repoDir = path.join(repo.dir, repo.name)
+    (repo, cb2) => { // eslint-disable-line consistent-return
+      const repoDir = path.join(repo.dir, repo.name);
       try {
-        process.chdir(repoDir)
+        process.chdir(repoDir);
       } catch (err) {
-        return cb(null, { repo: repo.name, error: 'invalid directory: ' + repoDir })
+        return cb2(null, { repo: repo.name, error: `invalid directory: ${repoDir}` });
       }
-      let cmd = 'git ' + opts.args.join(' ')
+      const cmd = `git ${opts.args.join(' ')}`;
       cp.exec(cmd, (err, stderr, stdout) => {
-        if (err) return cb(null, { repo: repo.name, error: err.message })
-        return cb(null, {
+        if (err) return cb(null, { repo: repo.name, error: err.message });
+        return cb2(null, {
           repo: repo.name,
-          output: formatOutput(opts.verbose, stderr, stdout)
-        })
-      })
+          output: formatOutput(opts.verbose, stderr, stdout),
+        });
+      });
     },
     (err, rslt) => {
-      if (err) return cb(err)
-      process.chdir(currDir)
-      cb(err, rslt)
+      if (err) {
+        cb(err);
+      } else {
+        process.chdir(currDir);
+        cb(err, rslt);
+      }
     }
-  )
-}
+  );
+};
 
-module.exports = me
+module.exports = me;

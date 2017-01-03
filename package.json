@@ -4,6 +4,7 @@
   "description": "COINS ecosystem development utility",
   "main": "src/index.js",
   "scripts": {
+    "lint": "eslint src",
     "preversion": "git checkout master && git pull && npm ls",
     "publish-patch": "npm run preversion && npm version patch && git push origin master --tags && npm publish",
     "publish-minor": "npm run preversion && npm version minor && git push origin master --tags && npm publish",
@@ -25,8 +26,10 @@
     "commander": "^2.9.0"
   },
   "devDependencies": {
-    "git-validate": "^2.1.4",
-    "standard": "^7.0.0"
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "pre-commit": "^1.2.2"
   },
   "repository": {
     "type": "git",
@@ -35,5 +38,8 @@
   "bugs": {
     "url": "https://github.com/MRN-Code/coins-cli/issues"
   },
-  "homepage": "https://github.com/MRN-Code/coins-cli#readme"
+  "homepage": "https://github.com/MRN-Code/coins-cli#readme",
+  "pre-commit": [
+    "lint"
+  ]
 }

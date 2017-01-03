@@ -1,29 +1,31 @@
-'use strict'
-const async = require('async')
-const cp = require('child_process')
-const formatOutput = require('./format-output')
+
+
+const async = require('async');
+const cp = require('child_process');
+const formatOutput = require('./format-output');
+
 const services = [
   'apache2',
   'steelpenny',
   'webpack-dev-server',
-  'nginx'
-]
+  'nginx',
+];
 
-const me = {}
+const me = {};
 
 me.bulkAction = function (opts, cb) {
-  const action = opts.action
+  const action = opts.action;
   async.map(
     services,
-    (service, cb) => {
-      let cmd = `sudo service ${service} ${action}`
+    (service, cb2) => {
+      const cmd = `sudo service ${service} ${action}`;
       cp.exec(cmd, (err, stderr, stdout) => {
-        if (err) return cb(null, { service, error: err.message })
-        return cb(null, { service, output: formatOutput(opts.verbose, stderr, stdout) })
-      })
+        if (err) return cb2(null, { service, error: err.message });
+        return cb2(null, { service, output: formatOutput(opts.verbose, stderr, stdout) });
+      });
     },
-    cb
-  )
-}
+    cb,
+  );
+};
 
-module.exports = me
+module.exports = me;
