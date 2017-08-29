@@ -4,12 +4,18 @@
   "description": "COINS ecosystem development utility",
   "main": "src/index.js",
   "scripts": {
+    "lint": "eslint src test",
     "preversion": "git checkout master && git pull && npm ls",
     "publish-patch": "npm run preversion && npm version patch && git push origin master --tags && npm publish",
     "publish-minor": "npm run preversion && npm version minor && git push origin master --tags && npm publish",
-    "publish-major": "npm run preversion && npm version major && git push origin master --tags && npm publish"
+    "publish-major": "npm run preversion && npm version major && git push origin master --tags && npm publish",
+    "test": "tape 'test/*.js'"
   },
-  "author": "cdaringe",
+  "author": "NI Development - The Mind Research Network <nidev@mrn.org> (http://coins.mrn.org)",
+  "contributors": [
+    "Chris Dieringer <cdaringe@gmail.org>",
+    "Cory Reed <swashcap@gmail.com>"
+  ],
   "bin": {
     "coins": "./src/coins.js"
   },
@@ -21,8 +27,23 @@
     "commander": "^2.9.0"
   },
   "devDependencies": {
-    "git-validate": "^2.1.4",
-    "standard": "^7.0.0"
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "pre-commit": "^1.2.2",
+    "sinon": "^1.17.7",
+    "tape": "^4.6.3"
   },
-  "repository": "https://github.com/cdaringe/coins-cli"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MRN-Code/coins-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MRN-Code/coins-cli/issues"
+  },
+  "homepage": "https://github.com/MRN-Code/coins-cli#readme",
+  "pre-commit": [
+    "lint",
+    "test"
+  ]
 }
